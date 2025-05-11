@@ -1,4 +1,4 @@
-﻿import { faker } from '@faker-js/faker';
+import { faker } from '@faker-js/faker';
 import { homePage } from '../../pages/homePage';
 import { registerPage } from '../../pages/registerPage';
 
@@ -7,7 +7,7 @@ describe('User Registration', () => {
 
   before(() => {
     user = {
-      name: faker.name.firstName(),
+      name: faker.person.firstName(),
       email: faker.internet.email(),
       password: 'Test@123'
     };
@@ -15,11 +15,13 @@ describe('User Registration', () => {
   });
 
   it('registers a user', () => {
+    cy.intercept('POST', '/api/createAccount').as('register');
     homePage.visit();
     homePage.goToSignupLogin();
     registerPage.fillSignupForm(user);
+    cy.wait('@register').its('response.statusCode').should('eq', 200);
     cy.contains('Account Created!').should('be.visible');
-    cy.get('[data-qa=\"continue-button\"]').click();
+    cy.get('[data-qa="continue-button"]').click();
     homePage.isLoggedIn(user.name);
   });
 });
