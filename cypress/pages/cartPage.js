@@ -15,12 +15,12 @@ class CartPage {
     cy.get('.cart_info tr').should('have.length', expectedCount + 1); // +1 for header row
   }
   verifyCartTotal() {
-    cy.get('.cart_total_price').each((, index) => {
-      cy.wrap().invoke('text').then((text) => {
-        expect(text.trim()).to.match(/Rs\. \d+/); // Verify price format
-      });
+  cy.get('.cart_total_price').each(($el, index) => {
+    cy.wrap($el).invoke('text').then((text) => {
+      expect(text.trim()).to.match(/Rs\. \d+/); // Verify price format
     });
-  }
+  });
+}
   proceedToCheckout() {
     cy.contains('Proceed To Checkout').click();
   }
