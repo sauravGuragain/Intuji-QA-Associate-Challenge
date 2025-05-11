@@ -1,28 +1,17 @@
 class ProductPage {
-  visit() {
-    cy.visit('/products');
-  }
-
-  filterCategory(category, subcategory) {
-    cy.contains(category).click();
-    cy.contains(subcategory).click();
-  }
-
-  verifyFilteredProducts(keyword) {
-    cy.get('.features_items').should('contain.text', keyword);
-  }
-
-  selectProduct(index = 1) {
-    cy.get('.features_items .col-sm-4').eq(index - 1).click();
-  }
-
-  verifyProductDetails() {
-    cy.get('.product-information').within(() => {
-      cy.contains('Availability').should('exist');
-      cy.contains('Condition').should('exist');
-      cy.contains('Brand').should('exist');
+  addToCartByProductName(productName) {
+    cy.get('.productinfo').contains(productName).parents('.productinfo').within(() => {
+      cy.contains('Add to cart').click();
     });
+  }
+
+  continueShopping() {
+    cy.contains('Continue Shopping').click();
+  }
+
+  goToCart() {
+    cy.get('a[href="/view_cart"]').click();
   }
 }
 
-export const productPage = new ProductPage();
+export default new ProductPage();

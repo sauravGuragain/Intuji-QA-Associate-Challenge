@@ -1,28 +1,26 @@
 class CartPage {
-  visit() {
-    cy.get('a[href="/view_cart"]').click();
+  verifyCartVisible() {
+    cy.get('#cart_info_table').should('be.visible');
   }
-  updateQuantity(index, quantity) {
-    cy.get('.cart_quantity_input').eq(index).clear().type(quantity);
-  }
-  verifyQuantity(index, expectedQuantity) {
-    cy.get('.cart_quantity_input').eq(index).should('have.value', expectedQuantity);
-  }
-  removeItem(index) {
-    cy.get('.cart_delete a').eq(index).click();
-  }
+
   verifyItemCount(expectedCount) {
-    cy.get('.cart_info tr').should('have.length', expectedCount + 1); // +1 for header row
+    cy.get('#cart_info_table tbody tr').should('have.length', expectedCount);
   }
-  verifyCartTotal() {
-  cy.get('.cart_total_price').each(($el, index) => {
-    cy.wrap($el).invoke('text').then((text) => {
-      expect(text.trim()).to.match(/Rs\. \d+/); // Verify price format
+
+  verifyTotalIsCorrect() {
+    let total = 0;
+    cy.get('#cart_info_table tbody tr').each(($row) => {
+      const price = parseInt($row.find('.cart_price p').text().replace(/\D/g, ''));
+      const quantity = parseInt($row.find('.cart_quantity button').text());
+      total += price * quantity;
+    }).then(() => {
+      cy.get('.cart_total_price').last().should('contain', `Rs. ${total}`);
     });
-  });
-}
-  proceedToCheckout() {
-    cy.contains('Proceed To Checkout').click();
+  }
+
+  removeItem(index) {
+    cy.get('#cart_info_table tbody tr').eq(index).find('.cart_quantity_delete').click();
   }
 }
-export const cartPage = new CartPage();
+
+export default new CartPage();
