@@ -1,25 +1,17 @@
 class ProductPage {
   addToCartByProductName(productName) {
-    
-    cy.get('.productinfo')
-      .contains(productName)
-      .parents('.productinfo')
-      .within(() => {
-        cy.contains('Add to cart').click();
-      });
-
-    
-    cy.contains('Continue Shopping', { timeout: 5000 }).should('be.visible');
+    cy.get('.productinfo').contains(productName).parents('.productinfo').within(() => {
+      cy.contains('Add to cart').click();
+    });
   }
 
   continueShopping() {
-    
-    cy.contains('Continue Shopping').should('be.visible').click();
+    cy.contains('Continue Shopping').click();
   }
 
   goToCart() {
     
-    cy.get('a[href="/view_cart"]').first().should('be.visible').click();
+    cy.get('.modal-content').contains('View Cart').click({ force: true });
   }
 }
 

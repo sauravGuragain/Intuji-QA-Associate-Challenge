@@ -1,14 +1,14 @@
-import { homePage } from '../../pages/homePage';
-import { registerPage } from '../../pages/registerPage';
-import { checkoutPage } from '../../pages/checkoutPage';
-import { cartPage } from '../../pages/cartPage';
+import {HomePage } from '../../pages/HomePagee';
+import {RegisterPage } from '../../pagesRegisterPage';
+import {CheckoutPage } from '../../pages/checkoutPage';
+import {CartPage } from '../../pages/cartPage';
 
 describe('Negative Scenarios', () => {
   it('fails registration with existing email', () => {
     cy.fixture('user').then((user) => {
-      homePage.visit();
-      homePage.goToSignupLogin();
-      registerPage.fillSignupForm(user);
+    HomePage.visit();
+      HomePage.goToSignupLogin();
+      RegisterPage.fillSignupForm(user);
       cy.contains('Email Address already exist!').should('be.visible');
     });
   });
@@ -17,11 +17,11 @@ describe('Negative Scenarios', () => {
     cy.fixture('user').then((user) => {
       cy.login(user.email, user.password);  
     });
-    cartPage.visit();
-    cartPage.proceedToCheckout();
-    checkoutPage.fillComment('Test order');
-    checkoutPage.placeOrder();
-    checkoutPage.fillPaymentDetails({
+    CartPage.visit();
+    CartPage.proceedToCheckout();
+    CheckoutPage.fillComment('Test order');
+    CheckoutPage.placeOrder();
+    CheckoutPage.fillPaymentDetails({
       name: 'Test User',
       number: '1234567890123456',
       cvc: '12',  
