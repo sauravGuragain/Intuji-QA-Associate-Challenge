@@ -1,5 +1,5 @@
 import productPage from '../../pages/productPage';
-import cartPage from '../../pages/cartPage';
+import CartPage from '../../pages/CartPage'; // ✅ exact match with filename
 
 describe('Cart and Quantity Management', () => {
   it('manages cart correctly', () => {
@@ -10,13 +10,11 @@ describe('Cart and Quantity Management', () => {
     productPage.addToCartByProductName('Men Tshirt');
     productPage.goToCart();
 
-    cartPage.verifyCartVisible();
-    cartPage.verifyItemCount(2);
+    CartPage.verifyCartVisible();
+    CartPage.verifyItemCount(2);
+    CartPage.verifyTotalIsCorrect();
 
-    // Quantity button update not working? Skip quantity change, verify prices.
-    cartPage.verifyTotalIsCorrect();
-
-    cartPage.removeItem(0);
-    cartPage.verifyItemCount(1);
+    CartPage.removeItem(0);
+    CartPage.verifyItemCount(1);
   });
 });
